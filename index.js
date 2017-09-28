@@ -17,6 +17,7 @@ app.use(parser.json())
 
 app.post('/create-pdf', function(request, response) {
   console.log(request.body);
+  response.send('Data received!');
 });
 
 
