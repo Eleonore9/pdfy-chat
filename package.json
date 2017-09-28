@@ -1,0 +1,30 @@
+{
+  "name": "pdfy-chat",
+  "version": "0.0.1",
+  "description": "A Node.js app to create a pdf from a chatbot chat",
+  "engines": {
+    "node": "7.4.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "4.15.2"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eleonore9/pdfy-chat"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": ""
+}

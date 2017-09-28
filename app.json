@@ -1,0 +1,8 @@
+{
+  "name": "Create a pdf from a chatbot chat!",
+  "description": "A Node.js app using Express 4",
+  "repository": "https://github.com/eleonore9/pdfy-chat",
+  "logo": "",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}
