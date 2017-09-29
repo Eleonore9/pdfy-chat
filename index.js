@@ -9,7 +9,7 @@ app.set('port', (process.env.PORT || 5000));
 
 // Homepage
 app.get('/', function(request, response) {
-  response.send('Hello World!')
+  response.send('Hello World!');
 });
 
 // Test route for pdf creation
@@ -23,7 +23,7 @@ app.get('/test-pdf', function(request, response) {
 
 // Allow external app to post JSON
 // Parse application/json
-app.use(parser.json())
+app.use(parser.json());
 
 app.post('/create-pdf', function(request, response) {
   console.log(request.body);
