@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "express": "4.15.2",
-    "body-parser": "1.18.2"
+    "body-parser": "1.18.2",
+    "node-jspdf": "0.0.3"
   },
   "devDependencies": {
     "request": "^2.81.0",
@@ -25,7 +26,8 @@
   "keywords": [
     "node",
     "heroku",
-    "express"
+    "express",
+    "jspdf"
   ],
   "license": ""
 }

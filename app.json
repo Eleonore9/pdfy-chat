@@ -3,6 +3,6 @@
   "description": "A Node.js app using Express 4",
   "repository": "https://github.com/TechForJustice/protechmepdfconversion",
   "logo": "",
-  "keywords": ["node", "express", "heroku"],
+  "keywords": ["node", "express", "heroku", "jspdf"],
   "image": "heroku/nodejs"
 }
