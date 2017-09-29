@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "express": "4.15.2",
-    "body-parser": "1.18.2"
+    "body-parser": "1.18.2",
+    "node-jspdf": "calvinfroedge/node-jspdf#a0485c06e58dca731bc9ed73cf1441d4e8c5649e"
   },
   "devDependencies": {
     "request": "^2.81.0",
