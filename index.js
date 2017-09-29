@@ -7,14 +7,19 @@ var jsPDF = require("node-jspdf");
 app.set('port', (process.env.PORT || 5000));
 
 
-// Test route
+// Homepage
 app.get('/', function(request, response) {
   response.send('Hello World!')
-  var doc = jsPDF();
-  doc.text(20, 20, 'Hello, world.');
-  doc.save('Test.pdf', function(err){console.log('saved!');});
 });
 
+// Test route for pdf creation
+app.get('/test-pdf', function(request, response) {
+  var doc = jsPDF();
+  doc.text(20, 20, 'Hello, world.');
+  console.log("pdf doc created!")
+  //doc.save('Test.pdf', function(err){console.log('saved!');});
+  response.send('Data written in a pdf file!')
+})
 
 // Allow external app to post JSON
 // Parse application/json
