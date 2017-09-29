@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var parser = require("body-parser");
-//var jsPDF = require("node-jspdf");
+var jsPDF = require("node-jspdf");
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -13,13 +13,13 @@ app.get('/', function(request, response) {
 });
 
 // Test route for pdf creation
-// app.get('/test-pdf', function(request, response) {
-//   var doc = jsPDF();
-//   doc.text(20, 20, 'Hello, world.');
-//   console.log("pdf doc created!")
-//   //doc.save('Test.pdf', function(err){console.log('saved!');});
-//   response.send('Data written in a pdf file!')
-// })
+app.get('/test-pdf', function(request, response) {
+  var doc = jsPDF();
+  doc.text(20, 20, 'Hello, world.');
+  console.log("pdf doc created!");
+  //doc.save('Test.pdf', function(err){console.log('saved!');});
+  response.send('Data written in a pdf file!');
+});
 
 // Allow external app to post JSON
 // Parse application/json
