@@ -26,8 +26,19 @@ app.get('/test-pdf', function(request, response) {
 app.use(parser.json());
 
 app.post('/create-pdf', function(request, response) {
-  console.log(request.body);
-  response.send('Data received!');
+  // I expected to receive an object with a list of messages
+  var messages = request.body["messages"];
+  // for each message in messages, retrieve message["data"][0]["text"]
+  var text = [];
+  for (var i = 0; i < messages.length; i++){
+    text.push(messages[i]["data"][0]["text"]);
+  }
+  console.log(text)
+  var doc = jsPDF();
+  doc.text(4, 7, text);
+  console.log("pdf doc created!");
+  doc.save('Test3.pdf', function(err){console.log('saved!');});
+  response.send('Data written in a pdf file!');
 });
 
 
