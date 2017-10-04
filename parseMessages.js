@@ -22,7 +22,7 @@ exports.processMessages = function(messages){
     } else {
       message.push("Answer:\n")
     }
-    var messageLines = exports.parseMessage(messages[i]["data"][0]["text"]);
+    var messageLines = exports.parseMessage(messages[i]["text"]);
     message.push.apply(message, messageLines);
     pdf_content.push.apply(pdf_content, message);
   }
