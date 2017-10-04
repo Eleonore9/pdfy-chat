@@ -21,7 +21,9 @@ app.use(parser.json());
 // and return a link to a pdf file containing the conversation
 app.post('/create-pdf', function(request, response) {
   // I expected to receive an object with a list of messages
+  console.log(request.body);
   var messages = request.body["messages"];
+  console.log(messages);
   var text = prepmessages.processMessages(messages);
   var doc = jsPDF();
   doc.text(4, 7, text);
