@@ -54,11 +54,11 @@ app.use(parser.json());
 app.post('/create-pdf', function(request, response) {
 
   // I expected to receive an object with a list of messages
-  var messages = request.body["data"];
-  var session = messages[0]["session"];
-  var text = prepmessages.processMessages(messages); // This returns an obj w/ Qs and As
-  var questions = text['questions']; // Select the array of Qs
-  var answers = text['answers']; // Select the array of As
+  data = request.body
+  console.log(typeof(data));
+  console.log(Object.keys(data));
+  var messages = request.body["messages"];
+  var text = prepmessages.processMessages(messages);
   var doc = jsPDF();
 
   for (var i = 0; i < questions.length; i++){ // Build the pdf document
