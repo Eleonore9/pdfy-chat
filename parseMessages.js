@@ -58,6 +58,11 @@ exports.processMessages = function(messages){
       message.push.apply(message, messageLines);
       pdf_content['answers'].push(message);
     }
+
+    var messageLines = exports.parseMessage(messages[i]["text"]);
+    message.push.apply(message, messageLines);
+    pdf_content.push.apply(pdf_content, message);
+
   }
   return pdf_content;
 }
