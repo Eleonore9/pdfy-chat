@@ -54,10 +54,7 @@ app.use(parser.json());
 app.post('/create-pdf', function(request, response) {
 
   // I expected to receive an object with a list of messages
-  data = request.body["data"]
-  console.log(typeof(data));
-  console.log(Object.keys(data));
-  var messages = request.body["messages"];
+  var messages = request.body["data"];
   var text = prepmessages.processMessages(messages);
   var doc = jsPDF();
 
