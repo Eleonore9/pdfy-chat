@@ -24,9 +24,13 @@ app.post('/create-pdf', function(request, response) {
   var messages = request.body["data"];
   var text = prepmessages.processMessages(messages);
   var doc = jsPDF();
-  doc.text(4, 7, text);
+  //doc.setTextColor("#273359");
+  doc.text(4, 7, text.slice(0, 6)).setTextColor("#adb5bd"); //light grey
+  doc.text(4, 50, text.slice(6)).setTextColor("#214cc4"); // dark blue
+  //doc.text(4, 7, text).setTextColor();
   console.log("pdf doc created!");
-  doc.save('Test.pdf', function(err){console.log('saved!');});
+  doc.output("bloburl");
+  //doc.save('Test.pdf', function(err){console.log('saved!');});
   response.send('Data written in a pdf file!');
 });
 

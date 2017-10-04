@@ -14,13 +14,17 @@ exports.processMessages = function(messages){
   // For each message, it retrieves the text.
   // Returns a list of messages strings to become pdf content.
   var pdf_content = [];
+  // The first message contains only json in the text field
+  messages = messages.slice(start=1);
+  // The array of messages needs to be reversed
+  messages = messages.reverse();
   // I expect the first message to be a question
   for (var i = 0; i < messages.length; i++){
     message = []
     if (i % 2 == 0) {
-      message.push("Question:\n");
+      message.push("\nQuestion: ");
     } else {
-      message.push("Answer:\n")
+      message.push("\nAnswer: ")
     }
     var messageLines = exports.parseMessage(messages[i]["text"]);
     message.push.apply(message, messageLines);
