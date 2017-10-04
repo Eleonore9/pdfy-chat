@@ -61,6 +61,7 @@ app.post('/create-pdf', function(request, response) {
   var text = prepmessages.processMessages(messages);  // This returns an obj w/ Qs and As
   var questions = text['questions']; // Select the array of Qs
   var answers = text['answers']; // Select the array of As
+
   var doc = jsPDF();
 
   for (var i = 0; i < questions.length; i++){ // Build the pdf document
