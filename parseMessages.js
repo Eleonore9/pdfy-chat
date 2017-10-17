@@ -1,18 +1,43 @@
 // parseMessages.js
 // var exports = module.exports = {};
 
+
+exports.splitLines = function(oldArray, newArray){
+  // Takes in an array of words and an empty array.
+  // Returns the second array containing strings of
+  // around 60 characters that represent the lines
+  // for the future pdf file.
+  var count = 0; var i = 0; var store = "";
+    if (oldArray.length === 0){
+      return newArray;
+    }
+    else {
+      while ((count < 60) && (i < oldArray.length)){
+	store = store + oldArray[i] + " ";
+	count += oldArray[i].length;
+	i++;
+      }
+      newArray.push(store);
+      exports.splitLines(oldArray.slice(i), newArray);
+      return newArray;
+  }
+}
+
 exports.parseMessage = function(message){
   // Takes in a message string and split it by line.
-  // Return a list of strings w/ 1 string per line.
+  // Return an array of strings w/ 1 string per line.
   var cleanedMessage = message.replace("::next::", '');
-  return cleanedMessage.split("\n");
+  var linesArray = [];
+  var wordsArray = cleanedMessage.split(/\s+/); // split on all spaces
+
+  return exports.splitLines(wordsArray, linesArray);
 }
 
 
 exports.processMessages = function(messages){
   // Takes in a object containing a whole chat conversation.
   // For each message, it retrieves the text.
-  // Returns a list of messages strings to become pdf content.
+  // Returns an array of messages strings to become pdf content.
   var pdf_content = {'questions': [],
 		     'answers': []};
   // The first message contains only json in the text field
@@ -34,15 +59,5 @@ exports.processMessages = function(messages){
       pdf_content['answers'].push(message);
     }
   }
-  //console.log(pdf_content);
   return pdf_content;
 }
-
-
-
-// WIP split by line: split after ~100 chars where there's a space
-var testString = "Thank you for taking the time to speak with me. I know that it can be hard to talk about something like this, but by sharing your info with me I will be able collect everything we discussed and put it into a document for you to share with your local legal aid organization or the Harris County DA's office, either by email or in person.\n::next::\nWhat is your email address?";
-
-//console.log(testString.substr(0, 100));
-
-// Idea: find the index of blank space. Split on spaces that are close to multiples of 100.
