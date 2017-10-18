@@ -3,7 +3,7 @@ var app = express();
 var parser = require("body-parser");
 var jsPDF = require("node-jspdf");
 var prepmessages = require("./parseMessages");
-//var btoa = require('btoa');
+const path = require('path');
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -12,6 +12,32 @@ app.set('port', (process.env.PORT || 5000));
 // Homepage
 app.get('/', function(request, response) {
   response.send('Hello World!');
+});
+
+
+// Route to download a pdf file
+app.use(express.static('tmp'))
+
+app.get('/file/:name', function (request, response, next) {
+
+  var options = {
+    root: __dirname + '/tmp/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+
+  var fileName = request.params.name;
+  response.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log('Sent:', fileName);
+    }
+  });
+
 });
 
 // Allow external app to post JSON
@@ -23,22 +49,23 @@ app.use(parser.json());
 app.post('/create-pdf', function(request, response) {
   // I expected to receive an object with a list of messages
   var messages = request.body["data"];
-  var text = prepmessages.processMessages(messages);
-  var questions = text['questions'];
-  var answers = text['answers'];
+  var text = prepmessages.processMessages(messages); // This returns an obj w/ Qs and As
+  var questions = text['questions']; // Select the array of Qs
+  var answers = text['answers']; // Select the array of As
   var doc = jsPDF();
-  for (var i = 0; i < questions.length; i++){
-    doc.setTextColor("#75777f");
-    var topQuestion = 10 + i * 27;
-    doc.text(6, topQuestion, questions[i]);
-    doc.setTextColor("#11509e");
-    var topAnswer = topQuestion + 2 + questions[i].length * 6;
-    doc.text(6, topAnswer, answers[i]);
+  for (var i = 0; i < questions.length; i++){ // Build the pdf document
+    doc.setTextColor("#75777f"); // Set a grey for Qs
+    var topQuestion = 10 + i * 27; // Set how hight Qs are located on the page
+    doc.text(6, topQuestion, questions[i]); // Write down Qs
+    doc.setTextColor("#11509e"); // Set a blue for the As
+    var topAnswer = topQuestion + 2 + questions[i].length * 6; // Set how hight As are located on the page
+    doc.text(6, topAnswer, answers[i]); // Write down As
   }
   console.log("pdf doc created!");
-  // doc.output("datauristring");
-  doc.save('Test.pdf', function(err){console.log('saved!');});
-  response.send("done!");
+  var filePath = 'tmp/Test.pdf';
+  doc.save(filePath, function(err){console.log('saved!');});
+  var fileLink = express.static(path.join(__dirname, filePath));
+  response.send("Dowload the pdf at " + fileLink);
 });
 
 
