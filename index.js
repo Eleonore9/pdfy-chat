@@ -44,6 +44,7 @@ app.get('/file/:name', function (request, response, next) {
 // Parse application/json
 app.use(parser.json());
 
+
 // Route to receive JSON data for a chat conversation
 // and return a link to a pdf file containing the conversation
 app.post('/create-pdf', function(request, response) {
@@ -65,7 +66,8 @@ app.post('/create-pdf', function(request, response) {
   var filePath = 'tmp/Test.pdf';
   doc.save(filePath, function(err){console.log('saved!');});
   var fileLink = express.static(path.join(__dirname, filePath));
-  response.send("Dowload the pdf at " + fileLink);
+  var hostname = request.protocol + "://" + request["headers"]["host"];
+  response.send(hostname + '/file/Test.pdf');
 });
 
 
