@@ -51,6 +51,7 @@ app.use(parser.json());
 app.post('/create-pdf', function(request, response) {
   // I expected to receive an object with a list of messages
   var messages = request.body["data"];
+  var session = messages[0]["session"];
   var text = prepmessages.processMessages(messages); // This returns an obj w/ Qs and As
   var questions = text['questions']; // Select the array of Qs
   var answers = text['answers']; // Select the array of As
@@ -63,12 +64,19 @@ app.post('/create-pdf', function(request, response) {
     var topAnswer = topQuestion + 3 + questions[i].length * 6.6; // Set how high As are located on the page
     doc.text(6, topAnswer, answers[i]); // Write down As
   }
-  console.log("pdf doc created!");
-  var filePath = 'tmp/Test.pdf';
+  doc.setProperties({
+    title: 'Protechme',
+    subject: 'Chatbot conversation',
+    author: 'user',
+    keywords: session,
+    creator: 'TechForJustice'
+  });
+  var fileName = session + '.pdf';
+  var filePath = 'tmp/' + fileName;
   doc.save(filePath, function(err){console.log('saved!');});
   var fileLink = express.static(path.join(__dirname, filePath));
   var hostname = request.protocol + "://" + request["headers"]["host"];
-  response.send(hostname + '/file/Test.pdf');
+  response.send(hostname + '/file/' + fileName);
 });
 
 
