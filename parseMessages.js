@@ -48,12 +48,12 @@ exports.processMessages = function(messages){
   for (var i = 0; i < messages.length; i++){
     message = []
     if (i % 2 == 0) {
-      message.push("\nQuestion: ");
+      message.push("Question: ");
       var messageLines = exports.parseMessage(messages[i]["text"]);
       message.push.apply(message, messageLines);
       pdf_content['questions'].push(message);
     } else {
-      message.push("\nAnswer: ");
+      message.push("Answer: ");
       var messageLines = exports.parseMessage(messages[i]["text"]);
       message.push.apply(message, messageLines);
       pdf_content['answers'].push(message);

@@ -47,6 +47,7 @@ app.use(parser.json());
 
 // Route to receive JSON data for a chat conversation
 // and return a link to a pdf file containing the conversation
+// Note: Below, Qs = questions and As = answers
 app.post('/create-pdf', function(request, response) {
   // I expected to receive an object with a list of messages
   var messages = request.body["data"];
@@ -56,10 +57,10 @@ app.post('/create-pdf', function(request, response) {
   var doc = jsPDF();
   for (var i = 0; i < questions.length; i++){ // Build the pdf document
     doc.setTextColor("#75777f"); // Set a grey for Qs
-    var topQuestion = 10 + i * 27; // Set how hight Qs are located on the page
+    var topQuestion = 10 + i * 32; // Set how high Qs are located on the page
     doc.text(6, topQuestion, questions[i]); // Write down Qs
     doc.setTextColor("#11509e"); // Set a blue for the As
-    var topAnswer = topQuestion + 2 + questions[i].length * 6; // Set how hight As are located on the page
+    var topAnswer = topQuestion + 3 + questions[i].length * 6.6; // Set how high As are located on the page
     doc.text(6, topAnswer, answers[i]); // Write down As
   }
   console.log("pdf doc created!");
