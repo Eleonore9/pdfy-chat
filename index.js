@@ -50,7 +50,9 @@ app.use(parser.json());
 
 // Route to receive JSON data for a chat conversation
 // and return a link to a pdf file containing the conversation
-// Note: Below, Qs = questions and As = answers
+// Note1: Below, Qs = questions and As = answers
+// Note2: The pdf file is deleted 5 minutes after it's creation
+// It's done in this route as I didn't find a way to redirect to a delete request
 app.post('/create-pdf', function(request, response) {
 
   // I expected to receive an object with a list of messages
@@ -83,7 +85,7 @@ app.post('/create-pdf', function(request, response) {
   var filePath = 'tmp/' + fileName;
   doc.save(filePath, function(err){console.log('Pdf file saved at ' + filePath);});
   var fileLink = express.static(path.join(__dirname, filePath));
-  var hostname = request.protocol + "://" + request["headers"]["host"];
+  var hostname = request.protocol + "://" + request["headers"]["host"]; // Haven't found a better way of returning the hostname (either 'http://localhost:5000/' or 'http://protechmepdfconversion.herokuapp.com/')
   response.send(hostname + '/file/' + fileName);
 
   setTimeout(function() {
