@@ -44,9 +44,6 @@ exports.handler = (event, context, callback) => {
       throw new Error(error);
     }
     var data = JSON.parse(body);
-    // console.log("msg is: " + data.messages[0].text);
-    //console.log("msg is: " + data.messages[1].text);
-    console.log("length is: " + data.messages.length + "\n" + "messages are: " + data.messages + "\n" + "data is:" + data);
 
     // send JSON data to the 'protechmepdfconversion' app
     var options = {
@@ -55,18 +52,15 @@ exports.handler = (event, context, callback) => {
         json: {"data": data.messages}
     };
 
-    request(options, function (error, response, body) {
+    request(options, function (error, res, body) {
         if (error) {
             console.log('MotionAI Error: ' + error.toString());
             throw new Error(error);
         }
+        var pdfLink = res.body;
+        responseJSON.response = pdfLink;
+        callback(null, responseJSON);
     });
-
-    responseJSON.response = body;
-
-    callback(null, responseJSON);
-    //callback to return data to Motion AI (must exist, or bot will not work)
-  //});
 
   });
 
