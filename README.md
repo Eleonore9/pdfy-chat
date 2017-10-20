@@ -7,11 +7,9 @@ The **ProTechMe PDF conversion** is a Node.js application that gets messages (JS
 
 ### Features
 * Parsing of JSON data
-
-Due to the use of [jsPDF](http://rawgit.com/MrRio/jsPDF/master/docs/index.html) library, format the messages to:
-* Separate questions from the bot and answers from the user
-* Build the content of the document line by line
-
+* Due to the use of [jsPDF](http://rawgit.com/MrRio/jsPDF/master/docs/index.html) library, format the messages to:
+  * Separate questions from the bot and answers from the user
+  * Build the content of the document line by line
 * Color the questions and answers differently
 * Write a PDF document
 * Returns a link to the downlodable document
