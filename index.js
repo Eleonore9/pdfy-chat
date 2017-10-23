@@ -4,6 +4,7 @@ var parser = require("body-parser");
 var jsPDF = require("node-jspdf");
 var prepmessages = require("./parseMessages");
 var mailer = require("./mailer");
+var utils = require("./utils");
 
 const path = require('path');
 const fs = require('fs');
@@ -14,7 +15,7 @@ app.set('port', (process.env.PORT || 5000));
 
 // Homepage
 app.get('/', function(request, response) {
-  response.send('Hello World!');
+  response.send('Welcome to ProTechMe PDF conversion tool!\nCheck this <a href="https://github.com/TechForJustice/protechmepdfconversion">link</a> for more info.');
 });
 
 
@@ -56,7 +57,7 @@ app.use(parser.json());
 // Note2: The pdf file is deleted 5 minutes after it's creation
 // It's done in this route as I didn't find a way to redirect to a delete request
 app.post('/create-pdf', function(request, response) {
-  var sendEmail = request.body.email; // This can be either "no" or the user email address
+  var sendEmail = utils.decipher(request.body.email); // This can be either "no" or the user email address
 
   // I expected to receive an object with a list of messages
   var messages = request.body.data;

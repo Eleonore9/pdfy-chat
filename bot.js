@@ -21,8 +21,20 @@ exports.handler = (event, context, callback) => {
             "attachedMedia":"string" // for Messenger bots only - stringified object containing attachment data from the user
         }
     */
-    var emailAddress = event.result;
-    console.log(emailAddress);
+
+    // Let's encrypt the user's email address before sending it to our server
+    var crypto = require('crypto');
+    var algorithm = 'aes-256-ctr';
+    var secret = .CRYPTO_SECRET;
+
+    function encrypt(text) {
+        var cipher = crypto.createCipher(algorithm, secret);
+        var crypted = cipher.update(text,'utf8','hex');
+        crypted += cipher.final('hex');
+        return crypted;
+    }
+
+    var emailAddress = encrypt(event.result);
 
     // this is the object we will return to Motion AI in the callback
     var responseJSON = {
