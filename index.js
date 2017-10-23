@@ -3,6 +3,8 @@ var app = express();
 var parser = require("body-parser");
 var jsPDF = require("node-jspdf");
 var prepmessages = require("./parseMessages");
+var mailer = require("./mailer");
+
 const path = require('path');
 const fs = require('fs');
 
@@ -97,6 +99,14 @@ app.post('/create-pdf', function(request, response) {
     });
   }, 300000);
 });
+
+
+app.post('/send-email', function(request, response) {
+  // Get the email address from the request and send out the email
+  mailer.sendEmail(request.body.emailAddress);
+  response.send("The email was sent successfully!");
+});
+
 
 
 app.listen(app.get('port'), function() {
