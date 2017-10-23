@@ -21,8 +21,8 @@ exports.handler = (event, context, callback) => {
             "attachedMedia":"string" // for Messenger bots only - stringified object containing attachment data from the user
         }
     */
-    var previousResponse = event.result;
-    console.log(previousResponse);
+    var emailAddress = event.result;
+    console.log(emailAddress);
 
     // this is the object we will return to Motion AI in the callback
     var responseJSON = {
@@ -52,7 +52,7 @@ exports.handler = (event, context, callback) => {
         uri: 'http://protechmepdfconversion.herokuapp.com/create-pdf',
         method: 'POST',
         json: {
-            "email": previousResponse,
+            "email": emailAddress,
             "data": data.messages
             }
     };
@@ -62,9 +62,16 @@ exports.handler = (event, context, callback) => {
             console.log('MotionAI Error: ' + error.toString());
             throw new Error(error);
         }
-        var pdfLink = res.body;
+        // Response is a JSON object containing a 'link' key for the pdf link
+        // and potentially a 'email' key if an email was sent
+        var pdfLink = res.body.link;
+        if (res.body.email){
+            responseJSON.response = "An email was sent out to" + emailAddress + "\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>";
+            callback(null, responseJSON);
+        } else {
         responseJSON.response = "Download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>";
         callback(null, responseJSON);
+        }
     });
 
   });

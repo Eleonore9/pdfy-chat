@@ -91,11 +91,15 @@ app.post('/create-pdf', function(request, response) {
   var fileLink = express.static(path.join(__dirname, filePath));
   var hostname = request.protocol + "://" + request["headers"]["host"]; // Haven't found a better way of returning the hostname (either 'http://localhost:5000/' or 'http://protechmepdfconversion.herokuapp.com/')
   var pdfURL = hostname + '/file/' + fileName;
-  response.send(pdfURL);
+  // Building the response as a JSON object
+  var responseToSend = {link: pdfURL}
 
   if(sendEmail !== "no"){
     mailer.sendEmail(sendEmail, pdfURL);
+    responseToSend.email = "sent";
   }
+
+  response.json(responseToSend);
 
   setTimeout(function() {
     // Delete pdf file after 5 minutes
