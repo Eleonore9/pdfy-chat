@@ -18,13 +18,14 @@ var emailSubject = "Your conversation for a protective order";
 var emailContent = "Hello,\n\nPlease, find attached a copy of the conversation containing your protective order information.\n\nKind regards,\n\nThe ProTechMe project";
 
 
-exports.sendEmail = function(to) {
+exports.sendEmail = function(to, fileURL) {
   // Compose the email
-  var mailOptions={
+  var mailOptions = {
     to      : to,
     subject : emailSubject,
-    text    : emailContent
-  }
+    text    : emailContent,
+    attachments: [{href: fileURL}]
+  };
 
   // Create the SMTP transporter
   var smtpTransporter = nodemailer.createTransport(smtpConfig);

@@ -56,13 +56,14 @@ app.use(parser.json());
 // Note2: The pdf file is deleted 5 minutes after it's creation
 // It's done in this route as I didn't find a way to redirect to a delete request
 app.post('/create-pdf', function(request, response) {
+  var sendEmail = request.body.email; // This can be either "no" or the user email address
 
   // I expected to receive an object with a list of messages
-  var messages = request.body["data"];
+  var messages = request.body.data;
   var session = messages[0]["session"];
   var text = prepmessages.processMessages(messages);  // This returns an obj w/ Qs and As
-  var questions = text['questions']; // Select the array of Qs
-  var answers = text['answers']; // Select the array of As
+  var questions = text.questions; // Select the array of Qs
+  var answers = text.answers; // Select the array of As
 
   var doc = jsPDF();
 
@@ -89,7 +90,12 @@ app.post('/create-pdf', function(request, response) {
   doc.save(filePath, function(err){console.log('Pdf file saved at ' + filePath);});
   var fileLink = express.static(path.join(__dirname, filePath));
   var hostname = request.protocol + "://" + request["headers"]["host"]; // Haven't found a better way of returning the hostname (either 'http://localhost:5000/' or 'http://protechmepdfconversion.herokuapp.com/')
-  response.send(hostname + '/file/' + fileName);
+  var pdfURL = hostname + '/file/' + fileName;
+  response.send(pdfURL);
+
+  if(sendEmail !== "no"){
+    mailer.sendEmail(sendEmail, pdfURL);
+  }
 
   setTimeout(function() {
     // Delete pdf file after 5 minutes
@@ -99,14 +105,6 @@ app.post('/create-pdf', function(request, response) {
     });
   }, 300000);
 });
-
-
-app.post('/send-email', function(request, response) {
-  // Get the email address from the request and send out the email
-  mailer.sendEmail(request.body.emailAddress);
-  response.send("The email was sent successfully!");
-});
-
 
 
 app.listen(app.get('port'), function() {
