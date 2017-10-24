@@ -42,8 +42,8 @@ exports.handler = (event, context, callback) => {
         headers: {
             accept: "application/vnd.heroku+json; version=3"
         },
-        auth: {user: "",
-               pass: ""}
+        auth: {user: "<EMAIL_for_Heroku_account>",
+               pass: "<API_KEY_for_Heroku_account>"}
     };
 
     request(optionsHeroku, function (error, response, body) {
@@ -66,7 +66,7 @@ exports.handler = (event, context, callback) => {
         var emailAddress = encrypt(event.result);
 
 
-    request("https://api.motion.ai/getConversations?key=&session=" + event.session,
+    request("https://api.motion.ai/getConversations?key=<MOTION.AI_API_KEY>&session=" + event.session,
 
     function (error, response, body) {
     if (error) {
