@@ -22,20 +22,6 @@ exports.handler = (event, context, callback) => {
         }
     */
 
-    // Let's encrypt the user's email address before sending it to our server
-    var crypto = require('crypto');
-    var algorithm = 'aes-256-ctr';
-    var secret = .CRYPTO_SECRET;
-
-    function encrypt(text) {
-        var cipher = crypto.createCipher(algorithm, secret);
-        var crypted = cipher.update(text,'utf8','hex');
-        crypted += cipher.final('hex');
-        return crypted;
-    }
-
-    var emailAddress = encrypt(event.result);
-
     // this is the object we will return to Motion AI in the callback
     var responseJSON = {
         "response": "", // what the bot will respond with
@@ -50,7 +36,37 @@ exports.handler = (event, context, callback) => {
 
     var request = require("request");
 
-    request("https://api.motion.ai/getConversations?key=1829386e6b4284872083e425c3d1d54e&session=" + event.session,
+    var optionsHeroku = {
+        uri: "https://api.heroku.com/apps/protechmepdfconversion/config-vars",
+        method: "GET",
+        headers: {
+            accept: "application/vnd.heroku+json; version=3"
+        },
+        auth: {user: "",
+               pass: ""}
+    };
+
+    request(optionsHeroku, function (error, response, body) {
+        if (error) {
+            console.log('Heroku API Error: ' + error.toString());
+            throw new Error(error);
+        }
+        var data = JSON.parse(body);
+        var secret = data["CRYPTO_SECRET"];
+
+        var crypto = require('crypto');
+        var algorithm = 'aes-256-ctr';
+        var encrypt = function(text) {
+            var cipher = crypto.createCipher(algorithm, secret);
+            var crypted = cipher.update(text,'utf8','hex');
+            crypted += cipher.final('hex');
+            return crypted;
+        }
+
+        var emailAddress = encrypt(event.result);
+
+
+    request("https://api.motion.ai/getConversations?key=&session=" + event.session,
 
     function (error, response, body) {
     if (error) {
@@ -87,5 +103,7 @@ exports.handler = (event, context, callback) => {
     });
 
   });
+
+    });
 
 };
