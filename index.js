@@ -68,13 +68,17 @@ app.post('/create-pdf', function(request, response) {
 
   var doc = jsPDF();
 
+  var topQuestion; var topAnswer; // Set how high Qs and As are located on the page
+
   for (var i = 0; i < questions.length; i++){ // Build the pdf document
     doc.setTextColor("#75777f"); // Set a grey for Qs
-    var topQuestion = 10 + i * 32; // Set how high Qs are located on the page
-    doc.text(6, topQuestion, questions[i]); // Write down Qs
+    if (i === 0) { var topQuestion = 15; } else {
+      topQuestion = topAnswer + 1 + answers[i-1].length * 7;
+    }
+    doc.text(10, topQuestion, questions[i]); // Write down Qs
     doc.setTextColor("#11509e"); // Set a blue for the As
-    var topAnswer = topQuestion + 3 + questions[i].length * 6.6; // Set how high As are located on the page
-    doc.text(6, topAnswer, answers[i]); // Write down As
+    topAnswer = topQuestion + 1 + questions[i].length * 6.5;
+    doc.text(10, topAnswer, answers[i]); // Write down As
   }
 
   // Add properties to the file
