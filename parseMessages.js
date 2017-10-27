@@ -21,8 +21,10 @@ exports.splitPages = function(PDFdoc, textArray){
     PDFdoc.text(12, topText, textArray[i]);
     count++;
     i++;
-  }
-  PDFdoc.addPage();
+    }
+    if (i != textArray.length) {
+      PDFdoc.addPage();
+    }
   return exports.splitPages(PDFdoc, textArray.slice(i));
   }
 }
