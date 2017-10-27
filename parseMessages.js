@@ -64,10 +64,8 @@ exports.processMessages = function(messages){
   // Takes in a object containing a whole chat conversation.
   // For each message, it retrieves the text.
   // Returns an array of messages strings to become pdf content.
-  var pdf_content = {'questions': [],
+  var pdfContent = {'questions': [],
 		     'answers': []};
-  // The first message contains only json in the text field
-  messages = messages.slice(start=1);
   // The array of messages needs to be reversed
   messages = messages.reverse();
   // I expect the first message to be a question
@@ -77,14 +75,14 @@ exports.processMessages = function(messages){
       message.push("Question: ");
       var messageLines = exports.parseMessage(messages[i]["text"]);
       message.push.apply(message, messageLines);
-      pdf_content['questions'].push(message);
+      pdfContent['questions'].push(message);
     } else {
       message.push("Answer: ");
       var messageLines = exports.parseMessage(messages[i]["text"]);
       message.push.apply(message, messageLines);
-      pdf_content['answers'].push(message);
+      pdfContent['answers'].push(message);
     }
 
   }
-return pdf_content;
+return pdfContent;
 }
