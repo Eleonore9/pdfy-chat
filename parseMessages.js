@@ -2,6 +2,31 @@
 // var exports = module.exports = {};
 
 
+exports.splitPages = function(PDFdoc, textArray){
+  // Takes in a jsPDF object and an array of text content
+  // Creates pagination and colors Qs and As differently
+  var i = 0; var topText = 7; var count = 0;
+  if (textArray.length === 0){
+    return PDFdoc;
+  } else {
+    while (count < 30 && i < textArray.length){
+      if (textArray[i] == "Question: ") {
+	PDFdoc.setTextColor("#75777f");
+	topText += 10;
+      } else if (textArray[i] == "Answer: ") {
+	PDFdoc.setTextColor("#11509e");
+	topText += 10;
+      } else { topText += 8; }
+
+    PDFdoc.text(12, topText, textArray[i]);
+    count++;
+    i++;
+  }
+  PDFdoc.addPage();
+  return exports.splitPages(PDFdoc, textArray.slice(i));
+  }
+}
+
 exports.splitLines = function(oldArray, newArray){
   // Takes in an array of words and an empty array.
   // Returns the second array containing strings of
@@ -12,7 +37,7 @@ exports.splitLines = function(oldArray, newArray){
       return newArray;
     }
     else {
-      while ((count < 60) && (i < oldArray.length)){
+      while ((count < 52) && (i < oldArray.length)){
 	store = store + oldArray[i] + " ";
 	count += oldArray[i].length;
 	i++;
@@ -32,7 +57,6 @@ exports.parseMessage = function(message){
 
   return exports.splitLines(wordsArray, linesArray);
 }
-
 
 exports.processMessages = function(messages){
   // Takes in a object containing a whole chat conversation.
@@ -60,5 +84,5 @@ exports.processMessages = function(messages){
     }
 
   }
-  return pdf_content;
+return pdf_content;
 }

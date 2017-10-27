@@ -66,20 +66,16 @@ app.post('/create-pdf', function(request, response) {
   var questions = text.questions; // Select the array of Qs
   var answers = text.answers; // Select the array of As
 
-  var doc = jsPDF();
-
-  var topQuestion; var topAnswer; // Set how high Qs and As are located on the page
-
-  for (var i = 0; i < questions.length; i++){ // Build the pdf document
-    doc.setTextColor("#75777f"); // Set a grey for Qs
-    if (i === 0) { var topQuestion = 15; } else {
-      topQuestion = topAnswer + 1 + answers[i-1].length * 7;
-    }
-    doc.text(10, topQuestion, questions[i]); // Write down Qs
-    doc.setTextColor("#11509e"); // Set a blue for the As
-    topAnswer = topQuestion + 1 + questions[i].length * 6.5;
-    doc.text(10, topAnswer, answers[i]); // Write down As
+  // Create an array that combines Qs and As
+  var fileContent = [];
+  for (var i = 0; i < questions.length; i++){
+    fileContent.push.apply(fileContent, questions[i]);
+    fileContent.push.apply(fileContent, answers[i]);
   }
+
+  // Create the PF document
+  var doc = jsPDF();
+  prepmessages.splitPages(doc, fileContent);
 
   // Add properties to the file
   doc.setProperties({
