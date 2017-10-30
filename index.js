@@ -95,7 +95,7 @@ app.post('/create-pdf', function(request, response) {
   // Building the response as a JSON object
   var responseToSend = {link: pdfURL}
 
-  if(sendEmail !== "no"){
+  if(sendEmail !== "No" || sendEmail !== "no" || sendEmail !== "Nope" || sendEmail !== "nope"){
     mailer.sendEmail(sendEmail, pdfURL);
     responseToSend.email = "sent";
   }
