@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ProTechMe PDF conversion</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>body{padding: 2% 4%;}</style>
+  </head>
+  <body>
+    <h1 id="protechme-pdf-conversion">ProTechMe PDF conversion</h1>
+    <p><strong>Find the Github repository <a href="https://github.com/TechForJustice/protechmepdfconversion" target="_blank">here</a></strong><br></p>
+<p><strong>ProTechMe</strong> is a chat bot to collect information for protective order. Read more <a href="https://github.com/TechForJustice/protechme">here</a>.</p>
+<p>The <strong>ProTechMe PDF conversion</strong> is a Node.js application that gets messages (JSON data) from a <strong>ProTechMe</strong> chat bot and converts the conversation into a PDF file.</p>
+<h2 id="features">Features</h2>
+<h3 id="overview">Overview</h3>
+<ul>
+<li>Parsing of JSON data</li>
+<li>Due to the use of <a href="http://rawgit.com/MrRio/jsPDF/master/docs/index.html">jsPDF</a> library, format the messages to:<ul>
+<li>Separate questions from the bot and answers from the user</li>
+<li>Build the content of the document line by line</li>
+</ul>
+</li>
+<li>Coloring the questions and answers differently</li>
+<li>Writing a PDF document</li>
+<li>Returning a link to the downlodable document</li>
+<li>Sending out an email with the PDF document as an attachement (if applicable)</li>
+<li>Deleting the document after 5 minutes</li>
+</ul>
+<h3 id="routes">Routes</h3>
+<ul>
+<li><code>/</code>: The homepage will display information (most likely from the repository Readme file)</li>
+<li><code>/create-pdf</code>: The route requested by the chat bot accompanied by JSON data in the body of the request. The text of the chat messages in the JSON data will be written into a PDF document.<br><em>Note:</em> depending on the previous message in the conversation, the chat bot will receive back a (temporarily) link to the downloadable PDF or the link and an email will be sent to an email address communicated by the user in the conversation (with the PDF file as an attachment).</li>
+<li><code>/file/:name</code>: The route used to serve the (temporarily) downloadable PDF file</li>
+</ul>
+<h2 id="development">Development</h2>
+<ul>
+<li>Make sure you have a version of Node greater than 4 installed with the command <code>$ node -v</code>, and have npm installed.</li>
+<li>Clone the repository <code>$ git clone git@github.com:TechForJustice/protechmepdfconversion.git</code>.</li>
+<li>Install all dependencies locally with <code>npm install</code></li>
+<li>Run it locally with <code>node index.js local</code></li>
+</ul>
+<h2 id="description">Description</h2>
+<ul>
+<li><strong><code>index.js</code></strong> - Defines the routes of the application and especially <code>/create-pdf</code> that is called by the bot with JSON data to create a PDF. Note: the PDF file is currently only store for 5 minutes.</li>
+<li><strong><code>parseMessages.js</code></strong> - Takes in the messages received from the bots and shape them so they can be written to a file using the jsPDF library.</li>
+<li><strong><code>bot.js</code></strong> - Keep track of the code for the chat bot Node module that post a request to the <code>/create-pdf</code> route.</li>
+<li><strong><code>tmp/</code></strong> - Folder to temporarily store the PDF files (the app expects this directory to be present)</li>
+<li><strong><code>packages.json</code></strong> - Defines the dependencies</li>
+<li><strong><code>app.json</code></strong> - Metadata for the application</li>
+<li><strong><code>Procfile</code></strong> - Metadata for Heroku</li>
+</ul>
+</body>
+</html>

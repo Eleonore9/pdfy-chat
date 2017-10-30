@@ -14,7 +14,8 @@
     "body-parser": "1.18.2",
     "express": "4.15.2",
     "node-jspdf": "calvinfroedge/node-jspdf#a0485c06e58dca731bc9ed73cf1441d4e8c5649e",
-    "nodemailer": "^4.2.0"
+    "nodemailer": "^4.2.0",
+    "jade": "1.11.0"
   },
   "devDependencies": {
     "request": "^2.81.0",

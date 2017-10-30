@@ -5,6 +5,7 @@ var jsPDF = require("node-jspdf");
 var prepmessages = require("./parseMessages");
 var mailer = require("./mailer");
 var utils = require("./utils");
+var jade = require("jade");
 
 const path = require('path');
 const fs = require('fs');
@@ -12,10 +13,11 @@ const fs = require('fs');
 
 app.set('port', (process.env.PORT || 5000));
 
-
-// Homepage
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+// Homepage with documentation
 app.get('/', function(request, response) {
-  response.send('Welcome to ProTechMe PDF conversion tool!\nCheck this <a href="https://github.com/TechForJustice/protechmepdfconversion">link</a> for more info.');
+  response.render("index");
 });
 
 
