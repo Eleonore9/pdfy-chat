@@ -63,7 +63,7 @@ exports.handler = (event, context, callback) => {
             return crypted;
         }
 
-        var emailAddress = encrypt(event.result);
+        var emailAddress = encrypt(event.reply);
 
 
     request("https://api.motion.ai/getConversations?key=<MOTION.AI_API_KEY>&session=" + event.session,
@@ -94,7 +94,7 @@ exports.handler = (event, context, callback) => {
         // and potentially a 'email' key if an email was sent
         var pdfLink = res.body.link;
         if (res.body.email){
-            responseJSON.response = "An email was sent out to " + event.result + ".\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>.";
+            responseJSON.response = "An email was sent out to " + event.reply + ".\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>.";
             callback(null, responseJSON);
         } else {
         responseJSON.response = "Download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>";

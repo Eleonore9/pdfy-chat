@@ -1,20 +1,27 @@
-## ProTechMe PDF conversion
+# ProTechMe PDF conversion
 
 **ProTechMe** is a chat bot to collect information for protective order. Read more [here](https://github.com/TechForJustice/protechme).
 
 The **ProTechMe PDF conversion** is a Node.js application that gets messages (JSON data) from a **ProTechMe** chat bot and converts the conversation into a PDF file.
 
 
-### Features
+## Features
+### Overview
 * Parsing of JSON data
 * Due to the use of [jsPDF](http://rawgit.com/MrRio/jsPDF/master/docs/index.html) library, format the messages to:
   * Separate questions from the bot and answers from the user
   * Build the content of the document line by line
-* Color the questions and answers differently
-* Write a PDF document
-* Returns a link to the downlodable document
-* Deletes the document after 5 minutes
+* Coloring the questions and answers differently
+* Writing a PDF document
+* Returning a link to the downlodable document
+* Sending out an email with the PDF document as an attachement (if applicable)
+* Deleting the document after 5 minutes
 
+### Routes
+* `/`: The homepage will display information (most likely from the repository Readme file)
+* `/create-pdf`: The route requested by the chat bot accompanied by JSON data in the body of the request. The text of the chat messages in the JSON data will be written into a PDF document.
+*Note:* depending on the previous message in the conversation, the chat bot will receive back a (temporarily) link to the downloadable PDF or the link and an email will be sent to an email address communicated by the user in the conversation (with the PDF file as an attachment).
+* `/file/:name`: The route used to serve the (temporarily) downloadable PDF file
 
 ## Development
 * Make sure you have a version of Node greater than 4 installed with the command `$ node -v`, and have npm installed.
