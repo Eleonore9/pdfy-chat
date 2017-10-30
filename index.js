@@ -72,6 +72,8 @@ app.post('/create-pdf', function(request, response) {
     fileContent.push.apply(fileContent, questions[i]);
     fileContent.push.apply(fileContent, answers[i]);
   }
+  // Add in the last reply
+  fileContent.push.apply(fileContent, ["Answer: ", sendEmail]);
 
   // Create the PF document
   var doc = jsPDF();
