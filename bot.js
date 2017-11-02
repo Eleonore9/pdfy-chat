@@ -22,6 +22,11 @@ exports.handler = (event, context, callback) => {
         }
     */
 
+    // Check whether the user wants to have an email sent out to NMLA
+    var emailNMLA = JSON.parse(event.replyHistory).filter(function(replies){
+            return replies.id === "<Module_ID"; // Add the ID for the previous module in the branch that ask the user if they wish to send an email to NMLA for assistance
+        })[0].raw;
+
     // this is the object we will return to Motion AI in the callback
     var responseJSON = {
         "response": "", // what the bot will respond with
@@ -80,7 +85,8 @@ exports.handler = (event, context, callback) => {
         uri: 'http://protechmepdfconversion.herokuapp.com/create-pdf',
         method: 'POST',
         json: {
-            "email": emailAddress,
+            "emailAssist": emailNMLA,
+            "emailUser": emailAddress,
             "data": data.messages
             }
     };
@@ -92,9 +98,15 @@ exports.handler = (event, context, callback) => {
         }
         // Response is a JSON object containing a 'link' key for the pdf link
         // and potentially a 'email' key if an email was sent
-        var pdfLink = res.body.link;
-        if (res.body.email){
+      var pdfLink = res.body.link;
+      if (response3.body.emailUser && !response3.body.emailAssist){
             responseJSON.response = "An email was sent out to " + event.reply + ".\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>.";
+            callback(null, responseJSON);
+        } else if (response3.body.emailAssist && !response3.body.emailUser) {
+            responseJSON.response = "An email was sent out to New Mexico Legal Aid.\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>.";
+            callback(null, responseJSON);
+        } else if (response3.body.emailAssist && response3.body.emailUser) {
+            responseJSON.response = "An email was sent out to New Mexico Legal Aid and to " + event.reply + ".\nYou can also download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>.";
             callback(null, responseJSON);
         } else {
         responseJSON.response = "Download a PDF of the conversation <a target='_blank' href='" + pdfLink + "'>here</a>";
