@@ -59,7 +59,8 @@ app.use(parser.json());
 // Note2: The pdf file is deleted 5 minutes after it's creation
 // It's done in this route as I didn't find a way to redirect to a delete request
 app.post('/create-pdf', function(request, response) {
-  var sendEmail = utils.decrypt(request.body.email); // This can be either "no" or the user email address
+  var sendEmailUser = utils.decrypt(request.body.emailUser); // This can be either "No" or the user email address
+  var sendEmailAssist = request.body.emailAssist; // This would be either "Yes" or "No"
 
   // I expected to receive an object with a list of messages
   var messages = request.body.data;
@@ -75,7 +76,7 @@ app.post('/create-pdf', function(request, response) {
     fileContent.push.apply(fileContent, answers[i]);
   }
   // Add in the last reply
-  fileContent.push.apply(fileContent, ["Answer: ", sendEmail]);
+  fileContent.push.apply(fileContent, ["Answer: ", sendEmailUser]);
 
   // Create the PF document
   var doc = jsPDF();
@@ -99,9 +100,14 @@ app.post('/create-pdf', function(request, response) {
   // Building the response as a JSON object
   var responseToSend = {link: pdfURL}
 
-  if(sendEmail !== "No" && sendEmail !== "no"){
-    mailer.sendEmail(sendEmail, pdfURL);
-    responseToSend.email = "sent";
+  if(sendEmailUser !== "No" && sendEmailUser !== "no"){ // If it's not "No" I expect the reply to be the user email address
+    mailer.sendEmail(sendEmailUser, pdfURL);
+    responseToSend.emailUser = "sent";
+  }
+
+  if(sendEmailAssist === "Yes" || sendEmailAssist === "yes"){
+    mailer.sendEmail(process.env.EMAIL_ASSISTANCE, pdfURL);
+    responseToSend.emailAssist = "sent";
   }
 
   response.json(responseToSend);
