@@ -8,9 +8,23 @@
   </head>
   <body>
     <h1 id="protechme-pdf-conversion">ProTechMe PDF conversion</h1>
-    <p><strong>Find the Github repository <a href="https://github.com/TechForJustice/protechmepdfconversion" target="_blank">here</a></strong><br></p>
 <p><strong>ProTechMe</strong> is a chat bot to collect information for protective order. Read more <a href="https://github.com/TechForJustice/protechme">here</a>.</p>
 <p>The <strong>ProTechMe PDF conversion</strong> is a Node.js application that gets messages (JSON data) from a <strong>ProTechMe</strong> chat bot and converts the conversation into a PDF file.</p>
+<h2 id="table-of-content">Table of content</h2>
+<ul>
+<li><a href="#features">Features</a><ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#routes">Routes</a></li>
+</ul>
+</li>
+<li><a href="#development">Development</a><ul>
+<li><a href="#code">Code</a></li>
+<li><a href="#deploy">Deploy</a></li>
+</ul>
+</li>
+<li><a href="#description">Description</a></li>
+<li><a href="#useful-links-for-contributors">Useful links for contributors</a></li>
+</ul>
 <h2 id="features">Features</h2>
 <h3 id="overview">Overview</h3>
 <ul>
@@ -33,21 +47,60 @@
 <li><code>/file/:name</code>: The route used to serve the (temporarily) downloadable PDF file</li>
 </ul>
 <h2 id="development">Development</h2>
+<h3 id="code">Code</h3>
+<p>All the code needed for this project is available in <a href="https://github.com/TechForJustice/protechmepdfconversion">this</a> repository.<br>For more details, see the <a href="#description">Description</a> paragraph.</p>
 <ul>
 <li>Make sure you have a version of Node greater than 4 installed with the command <code>$ node -v</code>, and have npm installed.</li>
 <li>Clone the repository <code>$ git clone git@github.com:TechForJustice/protechmepdfconversion.git</code>.</li>
 <li>Install all dependencies locally with <code>npm install</code></li>
 <li>Run it locally with <code>node index.js local</code></li>
 </ul>
+<h3 id="deploy">Deploy</h3>
+<p>The application is hosted on Heroku. Deploying it is as easy as <code>git push heroku master</code>.</p>
+<p><strong>Note:</strong><br>A few <a href="https://devcenter.heroku.com/articles/config-vars">configuration variables</a> are set that are used by both the application and the chatbot.<br>Those variables are:<br>A password for encryption purpose (<code>CRYPTO_SECRET</code>), credentials for the emails&#39; sender (<code>EMAIL_USERNAME</code>, <code>EMAIL_PASSWORD</code>), an address to send an email for assistance (<code>EMAIL_ASSISTANCE</code>).</p>
+<ul>
+<li>When working locally, you can set them using <code>$ export VARIABLE_NAME=VARIABLE_VALUE</code>.</li>
+<li>For the application, the easiest way to edit those are via Heroku&#39;s dashboard:<br>1) Access the Heroku dashboard <a href="https://dashboard.heroku.com/apps/protechmepdfconversion/settings"><code>Settings</code></a> tab (assuming you have the credentials to do so),<br>2) On the page, look for <code>Config variables</code>,<br>3) Click on <code>Reveal config variables</code>. There you can edit existing variables or add new ones if needed.</li>
+</ul>
 <h2 id="description">Description</h2>
 <ul>
 <li><strong><code>index.js</code></strong> - Defines the routes of the application and especially <code>/create-pdf</code> that is called by the bot with JSON data to create a PDF. Note: the PDF file is currently only store for 5 minutes.</li>
 <li><strong><code>parseMessages.js</code></strong> - Takes in the messages received from the bots and shape them so they can be written to a file using the jsPDF library.</li>
-<li><strong><code>bot.js</code></strong> - Keep track of the code for the chat bot Node module that post a request to the <code>/create-pdf</code> route.</li>
+<li><strong><code>bot.js</code></strong> - Keeps track of the code for the chat bot Node module that post a request to the <code>/create-pdf</code> route. <strong>Note: The configuration variables are missing on purpose. DO NOT COMMIT THEM.</strong></li>
+<li><strong><code>mailer.js</code></strong> - Uses the <a href="https://nodemailer.com/about/"><code>nodemailer</code></a> package to send out emails</li>
+<li><strong><code>utils.js</code></strong> - Uses the <a href="https://nodejs.org/api/crypto.html#crypto_crypto"><code>crypto</code></a> Node module to keep the user email address anonymous while it is sent between the chatbot and this application</li>
 <li><strong><code>tmp/</code></strong> - Folder to temporarily store the PDF files (the app expects this directory to be present)</li>
+<li><strong><code>views/readme.html</code></strong> - An html template for the application homepage. It contains the info on the repo&#39;s Readme and was created using the package <a href="https://www.npmjs.com/package/markdown-to-html">markdown-to-html</a>.</li>
 <li><strong><code>packages.json</code></strong> - Defines the dependencies</li>
 <li><strong><code>app.json</code></strong> - Metadata for the application</li>
 <li><strong><code>Procfile</code></strong> - Metadata for Heroku</li>
 </ul>
-</body>
+<h2 id="useful-links-for-contributors">Useful links for contributors</h2>
+<p><strong>Heroku</strong></p>
+<ul>
+<li><a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">https://devcenter.heroku.com/articles/getting-started-with-nodejs</a></li>
+<li><a href="https://devcenter.heroku.com/articles/config-vars">https://devcenter.heroku.com/articles/config-vars</a></li>
+</ul>
+<p><strong>jsPDF</strong></p>
+<ul>
+<li><a href="https://parall.ax/products/jspdf">https://parall.ax/products/jspdf</a></li>
+<li><a href="http://rawgit.com/MrRio/jsPDF/master/docs/index.html">http://rawgit.com/MrRio/jsPDF/master/docs/index.html</a></li>
+</ul>
+<p><strong>Motion.ai</strong></p>
+<ul>
+<li><a href="https://docs.motion.ai/docs/what-are-modules">https://docs.motion.ai/docs/what-are-modules</a></li>
+<li><a href="https://github.com/MotionAI/nodejs-samples">https://github.com/MotionAI/nodejs-samples</a></li>
+</ul>
+<p><strong>NodeMailer</strong></p>
+<ul>
+<li><a href="https://nodemailer.com/about/">https://nodemailer.com/about/</a></li>
+<li><a href="https://community.nodemailer.com/">https://community.nodemailer.com/</a></li>
+</ul>
+<p><strong>Crypto</strong></p>
+<ul>
+<li><a href="https://nodejs.org/api/crypto.html#crypto_crypto">https://nodejs.org/api/crypto.html#crypto_crypto</a></li>
+<li><a href="http://lollyrock.com/articles/nodejs-encryption/">http://lollyrock.com/articles/nodejs-encryption/</a></li>
+</ul>
+
+  </body>
 </html>
