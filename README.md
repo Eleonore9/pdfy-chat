@@ -73,17 +73,21 @@ A password for encryption purpose (`CRYPTO_SECRET`), credentials for the emails'
 
 ## Useful links for contributors
 **Heroku**
-* https://devcenter.heroku.com/articles/getting-started-with-nodejs
-* https://devcenter.heroku.com/articles/config-vars
+	* https://devcenter.heroku.com/articles/getting-started-with-nodejs
+	* https://devcenter.heroku.com/articles/config-vars
+
 **jsPDF**
-* https://parall.ax/products/jspdf
-* http://rawgit.com/MrRio/jsPDF/master/docs/index.html
+	* https://parall.ax/products/jspdf
+	* http://rawgit.com/MrRio/jsPDF/master/docs/index.html
+
 **Motion.ai**
-* https://docs.motion.ai/docs/what-are-modules
-* https://github.com/MotionAI/nodejs-samples
+	* https://docs.motion.ai/docs/what-are-modules
+	* https://github.com/MotionAI/nodejs-samples
+
 **NodeMailer**
-* https://nodemailer.com/about/
-* https://community.nodemailer.com/
+	* https://nodemailer.com/about/
+	* https://community.nodemailer.com/
+
 **Crypto**
-* https://nodejs.org/api/crypto.html#crypto_crypto
-* http://lollyrock.com/articles/nodejs-encryption/
+	* https://nodejs.org/api/crypto.html#crypto_crypto
+	* http://lollyrock.com/articles/nodejs-encryption/
